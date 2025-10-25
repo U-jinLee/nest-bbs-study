@@ -1,12 +1,41 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Get, Param, Query, Render } from '@nestjs/common';
+import { PostService } from './posts/posts.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly postService: PostService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Render('partials/home')
+  async getHome() {
+    const result = await this.postService.getPosts({ limit: 3, page: 1 });
+    return { posts: result.posts };
   }
+
+  @Get('posts')
+  @Render('partials/list')
+  async getPosts(@Query() { limit = 5, page = 1 }, search?: string) {
+    const result = await this.postService.getPosts({ limit, page }, search);
+    console.log(result);
+    return {
+      data: result.posts, // 게시글 데이터
+      page: result.pageCount,
+      limit: limit,
+      total: result.total,
+      totalPages: result.pageCount,
+      search: search || '',
+      hasPreviousPage: result.hasPreviousPage,
+      hasNextPage: result.hasNextPage,
+    };
+  }
+
+  @Get('posts/:id')
+  @Render('partials/detail')
+  async getPost(@Param('id') id: string) {
+    const result = await this.postService.getPostById(id);
+    return {
+      post: result,
+    };
+  }
+
 }

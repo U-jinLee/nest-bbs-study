@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model, ObjectId, Types } from 'mongoose';
 import {
   PostPaginationResponseDto,
   PostResponseDto,
@@ -8,6 +8,7 @@ import {
 import { PostRequestDto } from 'src/dto/postRequest.dto';
 import { Post } from './schemas/post.schema';
 import { PaginationDto } from 'src/dto/postPagination.dto';
+import { timestamp } from 'rxjs';
 
 @Injectable()
 export class PostService {
@@ -35,8 +36,9 @@ export class PostService {
       title: post.title,
       content: post.content,
       author: post.author,
-      createdAt: post.createdAt,
-      updatedAt: post.updatedAt,
+      // 문자열로 변환
+      createdAt: this.formatKST(post.createdAt.getTime()),
+      updatedAt: this.formatKST(post.updatedAt.getTime()),
     }));
 
     return new PostPaginationResponseDto(
@@ -47,6 +49,17 @@ export class PostService {
     );
   }
 
+  private formatKST(timestamp: number): string {
+    // timestamp가 밀리초 단위인 경우
+    const date = new Date(timestamp);
+
+    // 한국 시간대 문자열로 변환
+    // toLocaleString은 자동으로 시스템 로케일 기반 포맷을 사용
+    const koreanTime = date.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+
+    return koreanTime;
+  }
+
   async getPostById(id: string): Promise<PostResponseDto> {
     const post = await this.postModel.findById(id).exec();
 
@@ -54,14 +67,14 @@ export class PostService {
       throw new Error('Post not found');
     }
 
-    return {
-      id: post._id as Types.ObjectId,
-      title: post.title,
-      content: post.content,
-      author: post.author,
-      createdAt: post.createdAt,
-      updatedAt: post.updatedAt,
-    };
+    return new PostResponseDto(
+      post._id as Types.ObjectId,
+      post.title,
+      post.content,
+      post.author,
+      this.formatKST(post.createdAt.getTime()),
+      this.formatKST(post.updatedAt.getTime()),
+    );
   }
 
   async createPost(requestDto: PostRequestDto): Promise<PostResponseDto> {
@@ -73,8 +86,8 @@ export class PostService {
       title: saved.title,
       content: saved.content,
       author: saved.author,
-      createdAt: saved.createdAt,
-      updatedAt: saved.updatedAt,
+      createdAt: this.formatKST(saved.createdAt.getTime()),
+      updatedAt: this.formatKST(saved.updatedAt.getTime()),
     };
   }
 
@@ -98,8 +111,8 @@ export class PostService {
       title: updatedPost.title,
       content: updatedPost.content,
       author: updatedPost.author,
-      createdAt: updatedPost.createdAt,
-      updatedAt: updatedPost.updatedAt,
+      createdAt: this.formatKST(updatedPost.createdAt.getTime()),
+      updatedAt: this.formatKST(updatedPost.updatedAt.getTime()),
     };
   }
 }

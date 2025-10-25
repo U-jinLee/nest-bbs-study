@@ -1,0 +1,411 @@
+<div class="home-page">
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">Nest BBS에 오신 것을 환영합니다</h1>
+      <p class="hero-description">
+        NestJS와 TypeScript로 구축된 모던한 게시판 시스템입니다.<br>
+        빠르고 안전하며 확장 가능한 커뮤니티 플랫폼을 경험하세요.
+      </p>
+      <div class="hero-actions">
+        <a href="/posts" class="btn-primary-large">게시판 보기</a>
+        <a href="/write" class="btn-secondary-large">글 작성하기</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-number">1,234</div>
+        <div class="stat-label">총 게시글</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">5,678</div>
+        <div class="stat-label">총 댓글</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">892</div>
+        <div class="stat-label">활성 사용자</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features-section">
+    <h2 class="section-heading">주요 기능</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3 class="feature-title">빠른 성능</h3>
+        <p class="feature-description">NestJS 기반의 최적화된 서버 사이드 렌더링으로 빠른 페이지 로딩을 제공합니다.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3 class="feature-title">안전한 보안</h3>
+        <p class="feature-description">TypeScript의 타입 안정성과 검증된 보안 프레임워크로 데이터를 안전하게 보호합니다.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <h3 class="feature-title">모던한 디자인</h3>
+        <p class="feature-description">깔끔하고 직관적인 UI/UX로 누구나 쉽게 사용할 수 있습니다.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📱</div>
+        <h3 class="feature-title">반응형 레이아웃</h3>
+        <p class="feature-description">모바일, 태블릿, 데스크톱 모든 기기에서 완벽하게 작동합니다.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💬</div>
+        <h3 class="feature-title">실시간 댓글</h3>
+        <p class="feature-description">게시글마다 자유롭게 의견을 나누고 소통할 수 있습니다.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3 class="feature-title">강력한 검색</h3>
+        <p class="feature-description">원하는 내용을 빠르게 찾을 수 있는 검색 기능을 제공합니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="recent-posts-section">
+    <div class="section-header">
+      <h2 class="section-heading">최근 게시글</h2>
+      <a href="/posts" class="view-all-link">전체 보기 →</a>
+    </div>
+    <div class="recent-posts-grid">
+      {{#each posts}}
+        <article class="recent-post-card">
+          <div class="post-badge">New</div>
+          <h3 class="recent-post-title">{{this.title}}</h3>
+          <p class="recent-post-excerpt">{{this.content}}</p>
+          <div class="recent-post-meta">
+            <span class="post-date">{{this.createdAt}}</span>
+            <span class="post-stats">💬 5 · 👁 128</span>
+          </div>
+        </article>
+      {{/each}}
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2 class="cta-title">지금 바로 시작하세요</h2>
+      <p class="cta-description">Nest BBS와 함께 여러분의 이야기를 나누어보세요</p>
+      <a href="/write" class="btn-cta">첫 글 작성하기</a>
+    </div>
+  </section>
+</div>
+
+<style>
+  .home-page {
+    max-width: 100%;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
+    padding: 48px 0;
+    border-radius: 16px;
+    margin-bottom: 48px;
+  }
+
+  .hero-content {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .hero-title {
+    font-size: 36px;
+    font-weight: 800;
+    margin: 0 0 16px;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .hero-description {
+    font-size: 17px;
+    color: var(--muted);
+    margin: 0 0 28px;
+    line-height: 1.6;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary-large {
+    background: var(--accent);
+    color: white;
+    padding: 14px 32px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 16px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+  }
+
+  .btn-primary-large:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+  }
+
+  .btn-secondary-large {
+    background: white;
+    color: var(--accent);
+    border: 2px solid var(--accent);
+    padding: 14px 32px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 16px;
+    transition: all 0.3s;
+  }
+
+  .btn-secondary-large:hover {
+    background: var(--accent);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .stat-number {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* Features Section */
+  .features-section {
+    margin-bottom: 48px;
+  }
+
+  .section-heading {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 28px;
+    text-align: center;
+    color: var(--text);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .feature-card {
+    background: white;
+    padding: 28px;
+    border-radius: 12px;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    transition: all 0.3s;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.1);
+    border-color: rgba(37, 99, 235, 0.2);
+  }
+
+  .feature-icon {
+    font-size: 40px;
+    margin-bottom: 16px;
+  }
+
+  .feature-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 12px;
+    color: var(--text);
+  }
+
+  .feature-description {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Recent Posts Section */
+  .recent-posts-section {
+    margin-bottom: 48px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .view-all-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    transition: color 0.2s;
+  }
+
+  .view-all-link:hover {
+    color: #1d4ed8;
+  }
+
+  .recent-posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .recent-post-card {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .recent-post-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.08);
+    border-color: var(--accent);
+  }
+
+  .post-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: linear-gradient(135deg, var(--accent), #7c3aed);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .recent-post-title {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0 0 12px;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .recent-post-excerpt {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0 0 16px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .recent-post-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--muted);
+    padding-top: 12px;
+    border-top: 1px solid rgba(15, 23, 42, 0.04);
+  }
+
+  /* CTA Section */
+  .cta-section {
+    background: linear-gradient(135deg, var(--accent), #7c3aed);
+    padding: 48px;
+    border-radius: 16px;
+    text-align: center;
+  }
+
+  .cta-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .cta-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: white;
+    margin: 0 0 12px;
+  }
+
+  .cta-description {
+    font-size: 17px;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 28px;
+  }
+
+  .btn-cta {
+    background: white;
+    color: var(--accent);
+    padding: 14px 32px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 16px;
+    display: inline-block;
+    transition: all 0.3s;
+  }
+
+  .btn-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 28px;
+    }
+
+    .hero-description {
+      font-size: 15px;
+    }
+
+    .hero-stats {
+      grid-template-columns: 1fr;
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .recent-posts-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .cta-section {
+      padding: 32px 20px;
+    }
+
+    .cta-title {
+      font-size: 24px;
+    }
+  }
+</style>

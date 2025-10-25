@@ -28,6 +28,22 @@ export class PostResponseDto {
   readonly title: string;
   readonly content: string;
   readonly author: string;
-  readonly createdAt: Date;
-  readonly updatedAt: Date;
+  readonly createdAt: string;
+  readonly updatedAt: string;
+
+  constructor(
+    id: Types.ObjectId,
+    title: string,
+    content: string,
+    author: string,
+    createdAt: string,
+    updatedAt: string,
+  ) {
+    this.id = id;
+    this.title = title;
+    this.content = content;
+    this.author = author;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+  }
 }

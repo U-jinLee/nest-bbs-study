@@ -16,7 +16,7 @@ import {
 import { PostRequestDto } from 'src/dto/postRequest.dto';
 import { PaginationDto } from 'src/dto/postPagination.dto';
 
-@Controller('posts')
+@Controller('api/posts')
 export class PostsController {
   constructor(private readonly postService: PostService) {}
 

@@ -1,5 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
+
+@Schema({ timestamps: { createdAt: true, updatedAt: false } })
+export class Comment {
+  @Prop({ required: true })
+  content: string;
+}
+
+export const CommentSchema = SchemaFactory.createForClass(Comment);
 
 @Schema({ timestamps: true })
 export class Post extends Document {
@@ -17,6 +25,9 @@ export class Post extends Document {
 
   @Prop()
   updatedAt: Date;
+
+  @Prop({ type: [CommentSchema], default: []})
+  comments: Types.DocumentArray<Comment>;
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);
