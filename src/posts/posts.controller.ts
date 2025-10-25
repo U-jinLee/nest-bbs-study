@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { PostService } from './posts.service';
 import { PostResponseDto } from 'src/dto/postResponse.dto';
@@ -16,8 +17,8 @@ export class PostsController {
   constructor(private readonly postService: PostService) {}
 
   @Get()
-  getPosts(): Promise<PostResponseDto[]> {
-    return this.postService.getPosts();
+  getPosts(@Query('search') search?: string): Promise<PostResponseDto[]> {
+    return this.postService.getPosts(search);
   }
 
   @Get(':id')

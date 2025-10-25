@@ -9,8 +9,12 @@ import { Post } from './schemas/post.schema';
 export class PostService {
   constructor(@InjectModel(Post.name) private postModel: Model<Post>) {}
 
-  async getPosts(): Promise<PostResponseDto[]> {
-    const posts = await this.postModel.find().exec();
+  async getPosts(search?: string): Promise<PostResponseDto[]> {
+    const filter = search ? { title: { $regex: search, $options: 'i' } } : {};
+    const posts = await this.postModel
+      .find(filter)
+      .sort({ createdAt: -1 })
+      .exec();
     return posts.map((post) => ({
       id: post._id as Types.ObjectId,
       title: post.title,
