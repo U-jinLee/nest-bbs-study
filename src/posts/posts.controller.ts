@@ -9,16 +9,23 @@ import {
   Query,
 } from '@nestjs/common';
 import { PostService } from './posts.service';
-import { PostResponseDto } from 'src/dto/postResponse.dto';
+import {
+  PostPaginationResponseDto,
+  PostResponseDto,
+} from 'src/dto/postResponse.dto';
 import { PostRequestDto } from 'src/dto/postRequest.dto';
+import { PaginationDto } from 'src/dto/postPagination.dto';
 
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postService: PostService) {}
 
   @Get()
-  getPosts(@Query('search') search?: string): Promise<PostResponseDto[]> {
-    return this.postService.getPosts(search);
+  getPosts(
+    @Query() paginationDto: PaginationDto,
+    @Query('search') search?: string,
+  ): Promise<PostPaginationResponseDto> {
+    return this.postService.getPosts(paginationDto, search);
   }
 
   @Get(':id')

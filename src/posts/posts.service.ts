@@ -1,21 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { PostResponseDto } from 'src/dto/postResponse.dto';
+import {
+  PostPaginationResponseDto,
+  PostResponseDto,
+} from 'src/dto/postResponse.dto';
 import { PostRequestDto } from 'src/dto/postRequest.dto';
 import { Post } from './schemas/post.schema';
+import { PaginationDto } from 'src/dto/postPagination.dto';
 
 @Injectable()
 export class PostService {
   constructor(@InjectModel(Post.name) private postModel: Model<Post>) {}
 
-  async getPosts(search?: string): Promise<PostResponseDto[]> {
+  async getPosts(
+    { limit = 5, page = 1 }: PaginationDto,
+    search?: string,
+  ): Promise<PostPaginationResponseDto> {
     const filter = search ? { title: { $regex: search, $options: 'i' } } : {};
+    const skip = (Math.max(page, 1) - 1) * Math.max(limit, 1);
+
     const posts = await this.postModel
       .find(filter)
       .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
       .exec();
-    return posts.map((post) => ({
+
+    const total = await this.postModel.countDocuments().exec();
+    const pageCount = Math.ceil(total / limit);
+
+    const postResponseDtos = posts.map((post) => ({
       id: post._id as Types.ObjectId,
       title: post.title,
       content: post.content,
@@ -23,10 +38,21 @@ export class PostService {
       createdAt: post.createdAt,
       updatedAt: post.updatedAt,
     }));
+
+    return new PostPaginationResponseDto(
+      total,
+      pageCount,
+      postResponseDtos,
+      page,
+    );
   }
+
   async getPostById(id: string): Promise<PostResponseDto> {
     const post = await this.postModel.findById(id).exec();
-    if (!post) throw new Error('Post not found');
+
+    if (!post) {
+      throw new Error('Post not found');
+    }
 
     return {
       id: post._id as Types.ObjectId,
@@ -64,6 +90,7 @@ export class PostService {
     const updatedPost = await this.postModel
       .findByIdAndUpdate(id, postRequestDto, { new: true })
       .exec();
+
     if (!updatedPost) throw new Error('Post not found');
 
     return {
