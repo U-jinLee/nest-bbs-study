@@ -11,6 +11,12 @@ export class Post extends Document {
 
   @Prop()
   content: string;
+
+  @Prop()
+  createdAt: Date;
+
+  @Prop()
+  updatedAt: Date;
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);
