@@ -4,21 +4,11 @@ import { Model, Types } from 'mongoose';
 import { Post } from './schemas/post.schema';
 import { CommentRequestDto } from 'src/dto/commentRequest.dto';
 import { PostResponseDto } from 'src/dto/postResponse.dto';
+import { formatKST } from 'src/common/util/timeUtil';
 
 @Injectable()
 export class CommentService {
   constructor(@InjectModel(Post.name) private postModel: Model<Post>) {}
-
-  private formatKST(timestamp: number): string {
-    // timestamp가 밀리초 단위인 경우
-    const date = new Date(timestamp);
-
-    // 한국 시간대 문자열로 변환
-    // toLocaleString은 자동으로 시스템 로케일 기반 포맷을 사용
-    const koreanTime = date.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
-
-    return koreanTime;
-  }
 
   async addComment(
     postId: string,
@@ -40,8 +30,8 @@ export class CommentService {
       result.title,
       result.content,
       result.author,
-      this.formatKST(result.createdAt.getTime()),
-      this.formatKST(result.updatedAt.getTime()),
+      formatKST(result.createdAt.getTime()),
+      formatKST(result.updatedAt.getTime()),
       result.comments.map((c) => ({
         content: c.content,
         author: c.author,
