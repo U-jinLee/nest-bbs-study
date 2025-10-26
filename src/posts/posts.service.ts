@@ -27,7 +27,7 @@ export class PostService {
       .limit(limit)
       .exec();
 
-    const total = await this.postModel.countDocuments().exec();
+    const total = await this.postModel.find(filter).countDocuments().exec();
     const pageCount = Math.ceil(total / limit);
 
     const postResponseDtos = posts.map((post) => ({

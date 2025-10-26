@@ -48,4 +48,16 @@ export class CommentService {
       })),
     );
   }
+
+  async deleteComment(postId: string, index: number): Promise<void> {
+    const post = await this.postModel.findById(postId);
+    if (!post) throw new Error('Post not found');
+    if (index < 0 || index >= post.comments.length) {
+      throw new Error('Comment index out of bounds');
+    }
+
+    post.comments.splice(index, 1);
+
+    await post.save();
+  }
 }

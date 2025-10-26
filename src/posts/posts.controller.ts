@@ -63,4 +63,12 @@ export class PostsController {
   ): Promise<PostResponseDto> {
     return this.commentService.addComment(id, comment);
   }
+
+  @Delete(':id/comments/:index')
+  deleteComment(
+    @Param('id') id: string,
+    @Param('index') index: number,
+  ): Promise<void> {
+    return this.commentService.deleteComment(id, index);
+  }
 }
