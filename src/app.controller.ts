@@ -12,9 +12,18 @@ export class AppController {
     return { posts: result.posts };
   }
 
+  @Get('posts/write')
+  @Render('partials/write')
+  getPostWrite() {
+    return {};
+  }
+
   @Get('posts')
   @Render('partials/list')
-  async getPosts(@Query() { limit = 5, page = 1 }, search?: string) {
+  async getPosts(
+    @Query() { limit = 5, page = 1 },
+    @Query('search') search?: string,
+  ) {
     const result = await this.postService.getPosts({ limit, page }, search);
     console.log(result);
     return {
@@ -33,9 +42,13 @@ export class AppController {
   @Render('partials/detail')
   async getPost(@Param('id') id: string) {
     const result = await this.postService.getPostById(id);
+    const comments = result.comments || [];
     return {
       post: result,
+      comments: (comments || []).map((c) => ({
+        author: c.author || '',
+        content: c.content || '',
+      })),
     };
   }
-
 }

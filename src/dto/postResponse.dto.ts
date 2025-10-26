@@ -1,4 +1,5 @@
 import { Types } from 'mongoose';
+import { Comment } from 'src/posts/schemas/post.schema';
 
 export class PostPaginationResponseDto {
   readonly total: number;
@@ -30,6 +31,7 @@ export class PostResponseDto {
   readonly author: string;
   readonly createdAt: string;
   readonly updatedAt: string;
+  readonly comments?: Comment[];
 
   constructor(
     id: Types.ObjectId,
@@ -38,6 +40,7 @@ export class PostResponseDto {
     author: string,
     createdAt: string,
     updatedAt: string,
+    comments: Comment[],
   ) {
     this.id = id;
     this.title = title;
@@ -45,5 +48,6 @@ export class PostResponseDto {
     this.author = author;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+    this.comments = comments;
   }
 }

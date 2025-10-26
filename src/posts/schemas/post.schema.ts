@@ -1,10 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 
-@Schema({ timestamps: { createdAt: true, updatedAt: false } })
+@Schema({ _id: false, timestamps: { createdAt: true, updatedAt: false } })
 export class Comment {
   @Prop({ required: true })
   content: string;
+
+  @Prop({ required: true })
+  author: string;
 }
 
 export const CommentSchema = SchemaFactory.createForClass(Comment);

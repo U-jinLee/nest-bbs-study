@@ -1,6 +1,6 @@
 <div class="post-detail">
   <header class="post-header">
-    <div class="post-title-section">
+    <div class="post-title-section" data-id="{{post.id}}">
       <h1 class="post-title">{{post.title}}</h1>
       <div class="post-meta">
         <span class="meta-item">작성일: {{post.createdAt}}</span>
@@ -19,60 +19,26 @@
   <div class="post-content">
     <p>{{post.content}}</p>
   </div>
-
   <div class="comment-section">
-    <h2 class="section-title">댓글 <span class="comment-count">3</span></h2>
-
-    <div class="comment-list">
-      <div class="comment-item">
-        <div class="comment-header">
-          <div class="comment-author">
-            <div class="avatar">김</div>
-            <span class="author-name">김개발</span>
+    <h2 class="section-title">댓글 <span class="comment-count">{{comments.length}}</span></h2>
+    {{#each comments}}
+      <div class="comment-list">
+        <div class="comment-item">
+          <div class="comment-header">
+            <div class="comment-author">
+              <div class="avatar">김</div>
+              <span class="author-name">{{author}}</span>
+            </div>
+            <span class="comment-date">2015.15.15</span>
           </div>
-          <span class="comment-date">2024.01.15 15:10</span>
-        </div>
-        <div class="comment-content">
-          NestJS 정말 좋죠! 저도 최근에 프로젝트에 도입했는데 TypeScript 지원이 훌륭해서 만족스럽게 사용하고 있습니다.
-        </div>
-        <div class="comment-actions">
-          <button class="btn-comment-delete">삭제</button>
-        </div>
-      </div>
-
-      <div class="comment-item">
-        <div class="comment-header">
-          <div class="comment-author">
-            <div class="avatar">박</div>
-            <span class="author-name">박코더</span>
+          <div class="comment-content">
+            {{content}}
           </div>
-          <span class="comment-date">2024.01.15 15:45</span>
-        </div>
-        <div class="comment-content">
-          Handlebars 템플릿 엔진 선택도 좋은 것 같아요. SSR 성능이 궁금하네요!
-        </div>
-        <div class="comment-actions">
-          <button class="btn-comment-delete">삭제</button>
-        </div>
-      </div>
-
-      <div class="comment-item">
-        <div class="comment-header">
-          <div class="comment-author">
-            <div class="avatar">이</div>
-            <span class="author-name">이프론트</span>
+          <div class="comment-actions">
+            <button class="btn-comment-delete">삭제</button>
           </div>
-          <span class="comment-date">2024.01.15 16:05</span>
         </div>
-        <div class="comment-content">
-          PostgreSQL + TypeORM 조합 좋습니다. 마이그레이션 관리가 편하더라구요.
-        </div>
-        <div class="comment-actions">
-          <button class="btn-comment-delete">삭제</button>
-        </div>
-      </div>
-    </div>
-
+    {{/each}}
     <div class="comment-form">
       <h3 class="form-title">댓글 작성</h3>
       <div class="form-group">
@@ -248,7 +214,9 @@
     height: 36px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--accent), #7c3aed);
-    color: white;
+    color: #414055;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(15, 23, 42, 0.04);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -398,3 +366,48 @@
     }
   }
 </style>
+<script type="text/javascript">
+  document.querySelector('.btn-submit').addEventListener('click', function() {
+    const author = document.querySelector('.form-input').value;
+    const content = document.querySelector('.form-textarea').value;
+    const postId = document.querySelector('.post-title-section').getAttribute('data-id');
+
+    fetch(`/api/posts/${postId}/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        content: content,
+        author: author,
+      })
+    }).then(response => {
+      if (response.ok) {
+        alert('댓글이 등록되었습니다.');
+        window.location.reload();
+      } else {
+        alert('댓글 등록에 실패하였습니다.');
+      }
+    });
+  })
+
+  document.querySelector('.btn-delete').addEventListener('click', function() {
+    if (confirm('이 게시물을 삭제하시겠습니까?')) {
+      //data-id 속성에서 게시물 ID 가져오기
+      const id = document.querySelector('.post-title-section').getAttribute('data-id');
+      // 삭제 로직 구현
+      fetch(`/api/posts/${id}`, {
+        method: 'DELETE'
+      })
+      .then(response => {
+        if (response.ok) {
+          alert('게시물이 삭제되었습니다.');
+          window.location.href = '/posts';
+        } else {
+          alert('게시물 삭제에 실패하였습니다.');
+        }
+      });
+    }
+  });
+
+</script>

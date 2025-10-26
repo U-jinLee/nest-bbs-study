@@ -15,10 +15,15 @@ import {
 } from 'src/dto/postResponse.dto';
 import { PostRequestDto } from 'src/dto/postRequest.dto';
 import { PaginationDto } from 'src/dto/postPagination.dto';
+import { CommentRequestDto } from 'src/dto/commentRequest.dto';
+import { CommentService } from './comment.service';
 
 @Controller('api/posts')
 export class PostsController {
-  constructor(private readonly postService: PostService) {}
+  constructor(
+    private readonly postService: PostService,
+    private readonly commentService: CommentService,
+  ) {}
 
   @Get()
   getPosts(
@@ -49,5 +54,13 @@ export class PostsController {
     @Body() postRequestDto: PostRequestDto,
   ): Promise<PostResponseDto> {
     return this.postService.updatePost(id, postRequestDto);
+  }
+
+  @Post(':id/comments')
+  addComment(
+    @Param('id') id: string,
+    @Body() comment: CommentRequestDto,
+  ): Promise<PostResponseDto> {
+    return this.commentService.addComment(id, comment);
   }
 }

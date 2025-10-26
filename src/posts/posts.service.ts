@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, ObjectId, Types } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import {
   PostPaginationResponseDto,
   PostResponseDto,
@@ -8,7 +8,6 @@ import {
 import { PostRequestDto } from 'src/dto/postRequest.dto';
 import { Post } from './schemas/post.schema';
 import { PaginationDto } from 'src/dto/postPagination.dto';
-import { timestamp } from 'rxjs';
 
 @Injectable()
 export class PostService {
@@ -39,6 +38,7 @@ export class PostService {
       // 문자열로 변환
       createdAt: this.formatKST(post.createdAt.getTime()),
       updatedAt: this.formatKST(post.updatedAt.getTime()),
+      comments: post.comments,
     }));
 
     return new PostPaginationResponseDto(
@@ -74,6 +74,7 @@ export class PostService {
       post.author,
       this.formatKST(post.createdAt.getTime()),
       this.formatKST(post.updatedAt.getTime()),
+      post.comments,
     );
   }
 
