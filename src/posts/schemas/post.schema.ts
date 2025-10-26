@@ -29,7 +29,7 @@ export class Post extends Document {
   @Prop()
   updatedAt: Date;
 
-  @Prop({ type: [CommentSchema], default: []})
+  @Prop({ type: [CommentSchema], default: [] })
   comments: Types.DocumentArray<Comment>;
 }
 

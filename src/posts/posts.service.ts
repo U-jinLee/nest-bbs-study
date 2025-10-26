@@ -8,6 +8,7 @@ import {
 import { PostRequestDto } from 'src/dto/postRequest.dto';
 import { Post } from './schemas/post.schema';
 import { PaginationDto } from 'src/dto/postPagination.dto';
+import { formatKST } from 'src/common/util/timeUtil';
 
 @Injectable()
 export class PostService {
@@ -36,8 +37,8 @@ export class PostService {
       content: post.content,
       author: post.author,
       // 문자열로 변환
-      createdAt: this.formatKST(post.createdAt.getTime()),
-      updatedAt: this.formatKST(post.updatedAt.getTime()),
+      createdAt: formatKST(post.createdAt.getTime()),
+      updatedAt: formatKST(post.updatedAt.getTime()),
       comments: post.comments,
     }));
 
@@ -47,17 +48,6 @@ export class PostService {
       postResponseDtos,
       page,
     );
-  }
-
-  private formatKST(timestamp: number): string {
-    // timestamp가 밀리초 단위인 경우
-    const date = new Date(timestamp);
-
-    // 한국 시간대 문자열로 변환
-    // toLocaleString은 자동으로 시스템 로케일 기반 포맷을 사용
-    const koreanTime = date.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
-
-    return koreanTime;
   }
 
   async getPostById(id: string): Promise<PostResponseDto> {
@@ -72,8 +62,8 @@ export class PostService {
       post.title,
       post.content,
       post.author,
-      this.formatKST(post.createdAt.getTime()),
-      this.formatKST(post.updatedAt.getTime()),
+      formatKST(post.createdAt.getTime()),
+      formatKST(post.updatedAt.getTime()),
       post.comments,
     );
   }
@@ -87,8 +77,8 @@ export class PostService {
       title: saved.title,
       content: saved.content,
       author: saved.author,
-      createdAt: this.formatKST(saved.createdAt.getTime()),
-      updatedAt: this.formatKST(saved.updatedAt.getTime()),
+      createdAt: formatKST(saved.createdAt.getTime()),
+      updatedAt: formatKST(saved.updatedAt.getTime()),
     };
   }
 
@@ -112,8 +102,8 @@ export class PostService {
       title: updatedPost.title,
       content: updatedPost.content,
       author: updatedPost.author,
-      createdAt: this.formatKST(updatedPost.createdAt.getTime()),
-      updatedAt: this.formatKST(updatedPost.updatedAt.getTime()),
+      createdAt: formatKST(updatedPost.createdAt.getTime()),
+      updatedAt: formatKST(updatedPost.updatedAt.getTime()),
     };
   }
 }
