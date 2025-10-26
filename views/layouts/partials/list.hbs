@@ -30,12 +30,12 @@
 
 <div class="pagination">  
   <button class="page-btn" {{#unless hasPreviousPage}}disabled{{/unless}}>이전</button>
-  <div class="page-numbers">
-    <span class="page-number active">1</span>
+  <div class="page-numbers" data-page-count="{{page}}" data-current-page="{{currentPage}}" data-limit="{{limit}}" data-search="{{search}}">
+    {{!-- <span class="page-number active">1</span>
     <span class="page-number">2</span>
     <span class="page-number">3</span>
     <span class="page-number">4</span>
-    <span class="page-number">5</span>
+    <span class="page-number">5</span> --}}
   </div>
   <button class="page-btn" {{#unless hasNextPage}}disabled{{/unless}}>다음</button>
 </div>
@@ -250,6 +250,7 @@
   .page-number.active {
     background: var(--accent);
     color: white;
+    background: #1d4ed8;
     border-color: var(--accent);
   }
 
@@ -279,6 +280,34 @@
   }
 </style>
 <script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', () => {
+    const pageNumbersContainer = document.querySelector('.page-numbers');
+    const pageCount = parseInt(pageNumbersContainer.getAttribute('data-page-count'));
+    const currentPage = parseInt(pageNumbersContainer.getAttribute('data-current-page'));
+    const limit = parseInt(pageNumbersContainer.getAttribute('data-limit'));
+    const search = pageNumbersContainer.getAttribute('data-search');
+
+      console.log('Pagination script loaded', {pageCount, currentPage, limit, search});
+    pageNumbersContainer.innerHTML = '';
+
+    for(let i = 1; i <= pageCount; i++) {
+      const span = document.createElement('span');
+      span.classList.add('page-number');
+      if(i === currentPage) {
+        span.classList.add('active');
+      }
+      span.textContent = i;
+      span.addEventListener('click', () => {
+        let url = `/posts?page=${i}&limit=${limit}`;
+        if(search) {
+          url += `&search=${encodeURIComponent(search)}`;
+        }
+        location.href = url;
+      });
+      pageNumbersContainer.appendChild(span);
+    }
+  });
+
   document.querySelector('.btn-search').addEventListener('click', () => {
     const query = document.querySelector('.search-box input').value;
     if(!query.trim()) {return;}

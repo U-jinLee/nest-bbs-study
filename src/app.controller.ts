@@ -29,6 +29,7 @@ export class AppController {
       data: result.posts, // 게시글 데이터
       page: result.pageCount,
       limit: limit,
+      currentPage: result.currentPage,
       total: result.total,
       totalPages: result.pageCount,
       search: search || '',
