@@ -24,6 +24,10 @@
       </div>
     </div>
 {{/each}}
+{{#unless data.length}}
+  <div style="text-align:center;padding:28px;border-radius:8px;border:1px dashed rgba(15,23,42,0.04);color:var(--muted);">게시글이 없습니다.</div>
+{{/unless}}
+
 <div class="pagination">  
   <button class="page-btn" {{#unless hasPreviousPage}}disabled{{/unless}}>이전</button>
   <div class="page-numbers">

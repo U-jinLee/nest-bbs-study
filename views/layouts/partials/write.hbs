@@ -6,7 +6,7 @@
     </div>
   </div>
   <div class="write-container">
-    <form action="/posts" method="POST" class="write-form">
+    <div class="write-form">
       <div class="form-group">
         <label for="title">제목</label>
         <input 
@@ -43,14 +43,14 @@
       </div>
 
       <div class="form-actions">
-        <button type="submit" class="btn-primary">
+        <button type="submit" id="post-submit" class="btn-secondary">
           작성 완료
         </button>
         <button type="button" class="btn-secondary" onclick="history.back()">
           취소
         </button>
       </div>
-    </form>
+    </div>
   </div>
 </div>
 
@@ -216,5 +216,33 @@
   }
 </style>
 <script type="text/javascript">
+    document.getElementById('post-submit').addEventListener('click', () => {
+        const title = document.getElementById('title').value;
+        const content = document.getElementById('content').value;
+        const author = document.getElementById('author').value;
 
+        if(!(title || content || author)) {
+            alert('모든 필드를 작성해주세요.');
+            return;
+        }
+
+        fetch('/api/posts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                content: content,
+                title: title,
+                author: author,
+            })
+        }).then(response => {
+            if (response.ok) {
+                alert('글 작성이 완료되었습니다.');
+                window.location.href = `/posts/${response.id}`;
+            } else {
+                alert('글 작성에 실패하였습니다.');
+            }
+        })
+    })
 </script>
