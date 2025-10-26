@@ -25,7 +25,6 @@ export class AppController {
     @Query('search') search?: string,
   ) {
     const result = await this.postService.getPosts({ limit, page }, search);
-    console.log(result);
     return {
       data: result.posts, // 게시글 데이터
       page: result.pageCount,

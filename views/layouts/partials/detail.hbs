@@ -3,6 +3,8 @@
     <div class="post-title-section" data-id="{{post.id}}">
       <h1 class="post-title">{{post.title}}</h1>
       <div class="post-meta">
+        <span class="meta-item">작성자: <b>{{post.author}}</b></span>
+        <span class="meta-divider">|</span>
         <span class="meta-item">작성일: {{post.createdAt}}</span>
         <span class="meta-divider">|</span>
         <span class="meta-item">수정일: {{post.updatedAt}}</span>
@@ -26,10 +28,10 @@
         <div class="comment-item">
           <div class="comment-header">
             <div class="comment-author">
-              <div class="avatar">김</div>
+              <div class="avatar" aria-hidden="true"></div>
               <span class="author-name">{{author}}</span>
             </div>
-            <span class="comment-date">2015.15.15</span>
+            <span class="comment-date">{{createdAt}}</span>
           </div>
           <div class="comment-content">
             {{content}}

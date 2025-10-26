@@ -238,11 +238,13 @@
             })
         }).then(response => {
             if (response.ok) {
-                alert('글 작성이 완료되었습니다.');
-                window.location.href = `/posts/${response.id}`;
+                response.json().then(data => {
+                    alert('글이 성공적으로 작성되었습니다.');
+                    window.location.href = `/posts/${data.id}`;
+                });
             } else {
                 alert('글 작성에 실패하였습니다.');
             }
-        })
+        });
     })
 </script>
