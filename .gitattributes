@@ -1,2 +1,2 @@
-.hbs linguist-detectable=false
-.css linguist-detectable=false
+.hbs linguist-vendored
+.ts linguist-vendored=false
