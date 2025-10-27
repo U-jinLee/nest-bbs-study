@@ -42,7 +42,6 @@
     const limit = parseInt(pageNumbersContainer.getAttribute('data-limit'));
     const search = pageNumbersContainer.getAttribute('data-search');
 
-      console.log('Pagination script loaded', {pageCount, currentPage, limit, search});
     pageNumbersContainer.innerHTML = '';
 
     for(let i = 1; i <= pageCount; i++) {
@@ -62,10 +61,9 @@
       pageNumbersContainer.appendChild(span);
     }
   });
-
+  
   document.querySelector('.btn-search').addEventListener('click', () => {
     const query = document.querySelector('.search-box input').value;
-    if(!query.trim()) {return;}
     location.href = `/posts?search=${encodeURIComponent(query)}`;
   });
 </script>
